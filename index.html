@@ -1,105 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Editorial Assistant</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            color: #000;
-        }
-        
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        
-        textarea {
-            width: 100%;
-            height: 150px;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            background-color: #fff;
-            color: #000;
-        }
-        
-        button {
-            background-color: #000;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 10px 0;
-            width: 100%;
-        }
-        
-        button:hover {
-            background-color: #333;
-        }
-        
-        .copy-button {
-            background-color: #555;
-        }
-        
-        .copy-button:hover {
-            background-color: #333;
-        }
-        
-        label {
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 10px;
-            }
-
-            textarea {
-                height: 100px;
-            }
-
-            button {
-                padding: 8px 16px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Editorial Assistant</h1>
-        <h5>Made exclusively for பிரபல எழுத்தாளர் கோகிலா</h5>
-        <br>
-        <div>
-            <label>Input Text:</label>
-            <textarea id="inputText" placeholder="Paste your text here..."></textarea>
-        </div>
-        
-        <button onclick="fixText()">Fix Text</button>
-        
-        <div>
-            <label>Corrected Text:</label>
-            <textarea id="outputText" readonly></textarea>
-        </div>
-        
-        <button class="copy-button" onclick="copyText()">Copy to Clipboard</button>
-    </div>
-
-    <script>
-        function fixText() {
+function fixText() {
     // Get the input text
     let text = document.getElementById('inputText').value;
     
@@ -114,6 +13,11 @@
         
         // Fix multiple spaces
         fixed = fixed.replace(/ +/g, ' ');
+        
+        // Fix periods and commas with no space before and ensure space after
+        fixed = fixed.replace(/(\w)([.,])(\w)/g, '$1$2 $3');  // word[.,]word → word[.,] word
+        fixed = fixed.replace(/\s+([.,])(\w)/g, '$1 $2');     // word [.,]word → word[.,] word
+        fixed = fixed.replace(/(\w)([.,])\s+/g, '$1$2 ');     // word[.,] word → word[.,] word
         
         // Fix spaces before punctuation
         fixed = fixed.replace(/\s+([.,!?:;])/g, '$1');
@@ -140,8 +44,8 @@
         // Ensure single space after periods
         fixed = fixed.replace(/\.\s+/g, '. ');
         
-        // Fix capitalization after periods
-        fixed = fixed.replace(/\. ([a-z])/g, (match, letter) => '. ' + letter.toUpperCase());
+        // Fix capitalization after periods (including when period is right next to the word)
+        fixed = fixed.replace(/\.(\s*)([a-z])/g, (match, space, letter) => '. ' + letter.toUpperCase());
         
         // Fix capitalization at the start of paragraph
         fixed = fixed.charAt(0).toUpperCase() + fixed.slice(1);
@@ -162,13 +66,3 @@
     // Update output
     document.getElementById('outputText').value = result;
 }
-
-        function copyText() {
-            const outputText = document.getElementById('outputText');
-            outputText.select();
-            document.execCommand('copy');
-            alert('Text copied to clipboard!');
-        }
-    </script>
-</body>
-</html>
