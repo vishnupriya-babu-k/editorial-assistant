@@ -1,7 +1,7 @@
 # Editorial Assistant
 A simple web application designed to help editors by automatically correcting common text errors. This tool detects and fixes common issues like extra spaces, missing punctuation, and incorrect spacing around punctuation marks, making the editing process faster and more efficient. The tool will help editors save time by handling these minor issues automatically, allowing them to focus more on the content and structure of the text.
 
-https://vishnupriya-babu-k.github.io/editorial-assistant/editor.html
+https://vishnupriya-babu-k.github.io/editorial-assistant
 
 # Features
 Automatically removes extra spaces between words (e.g., double spaces after periods).
