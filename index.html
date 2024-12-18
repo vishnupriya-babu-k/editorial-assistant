@@ -174,25 +174,19 @@
         // Fix period spacing - updated for Unicode support
         fixed = fixed.replace(/\.\s*(\S)/gu, '. $1');  // Add space after period
         fixed = fixed.replace(/(\S)\s*\./gu, '$1.');   // Remove space before period
+
         
-        // Fix spaces around quotation marks
-        fixed = fixed.replace(/"\s+/g, '"');
-        fixed = fixed.replace(/\s+"/g, '"');
-        fixed = fixed.replace(/'\s+/g, "'");
-        fixed = fixed.replace(/\s+'/g, "'");
-        
-        // Fix spacing around parentheses
-        fixed = fixed.replace(/\s+\)/g, ')');
-        fixed = fixed.replace(/\(\s+/g, '(');
-        
+        // Ensure there is a space before an opening parenthesis, but no space after it
+        fixed = fixed.replace(/\s*\(/g, ' (');
+
+        // Ensure there is a space after a closing parenthesis, but no space before it
+        fixed = fixed.replace(/\)\s*/g, ') ');
+
         // Fix multiple consecutive punctuation marks
         fixed = fixed.replace(/([.,!?:;]){2,}/g, '$1');
         
         // Ensure single space after periods
         fixed = fixed.replace(/\.\s+/g, '. ');
-        
-        // Fix capitalization after periods (if applicable)
-        fixed = fixed.replace(/\.(\s*)([a-zA-Z])/g, (match, space, letter) => '. ' + letter.toUpperCase());
         
         return fixed;
     });
